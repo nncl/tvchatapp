@@ -9,10 +9,17 @@
 ionic plugin add org.apache.cordova.inappbrowser
 ```
 
-- Setup the required bower packages:
+- Setup the required bower packages - **first time once**:
 
 ```
-bower install ngCordova angularfire lodash angular-moment openfb --save-dev
+$ bower install ngCordova angularfire lodash angular-moment openfb --save-dev
+$ bower install ngCordova --save-dev
+$ bower install firebase --save-dev
+$ bower install angularfire --save-dev
+$ bower install moment --save-dev
+$ bower install angular-moment moment --save
+
+$ bower install
 ```
 
 - Edit your `ionic.app.scss` file adding:
