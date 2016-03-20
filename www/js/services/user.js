@@ -5,7 +5,9 @@ app.service('UserService', function (FIREBASE_URL,
                                      $q,
                                      $rootScope,
                                      $localstorage,
-                                     $ionicPopup) {
+                                     $ionicPopup,
+                                     $firebaseAuth,
+                                     $firebaseObject) {
 
 	var ref = new Firebase(FIREBASE_URL);
 	var usersRef = new Firebase(FIREBASE_URL + "/users");
@@ -96,11 +98,11 @@ app.service('UserService', function (FIREBASE_URL,
 		loginUser: function () {
 			var d = $q.defer();
 
-			self.loadUser().then(function (user) {
-				if (user) {
-					d.resolve(self.current);
-				}
-				else {
+			// self.loadUser().then(function (user) {
+			// 	if (user) {
+			// 		d.resolve(self.current);
+			// 	}
+			// 	else {
 
 					//
 					// Initiate the facebook login process
@@ -111,13 +113,11 @@ app.service('UserService', function (FIREBASE_URL,
 							console.log(response);
 							if (response.status === 'connected') {
 								console.log('Facebook login succeeded');
+								var token = response.authResponse.accessToken;
+								console.log('Token: ' + token);
 								//
 								// Facebook login was a success, get details about the current
 								// user
-								//
-								// UNCOMMENT WHEN GOING THROUGH LECTURES
-								/*
-								var token = response.authResponse.accessToken;
 								openFB.api({
 									path: '/me',
 									params: {},
@@ -127,8 +127,9 @@ app.service('UserService', function (FIREBASE_URL,
 										//
 										// We got details of the current user now authenticate via firebase
 										//
-										console.log('Authenticating with firebase');
 
+
+										console.log('Authenticating with firebase');
 
 										var auth = $firebaseAuth(ref);
 										auth.$authWithOAuthToken("facebook", token)
@@ -200,7 +201,6 @@ app.service('UserService', function (FIREBASE_URL,
 										d.reject(error);
 									}
 								});
-								*/
 							} else {
 								console.error('Facebook login failed');
 								//
@@ -217,8 +217,8 @@ app.service('UserService', function (FIREBASE_URL,
 						{
 							scope: 'email' // Comma separated list of permissions to request from facebook
 						});
-				}
-			});
+			// 	}
+			// });
 			return d.promise;
 		}
 	};
