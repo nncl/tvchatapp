@@ -62,8 +62,6 @@ app.service('UserService', function (FIREBASE_URL,
 		loadUser: function () {
 			var d = $q.defer();
 
-			// UNCOMMENT WHEN GOING THROUGH LECTURES
-			/*
 			// Check local storage to see if there is a user already logged in
 			var currentUserId = $localstorage.get('tvchat-user', null);
 			if (currentUserId && currentUserId != "null") {
@@ -81,8 +79,6 @@ app.service('UserService', function (FIREBASE_URL,
 			} else {
 				d.resolve();
 			}
-
-			*/
 			return d.promise;
 		},
 		/*
@@ -98,11 +94,11 @@ app.service('UserService', function (FIREBASE_URL,
 		loginUser: function () {
 			var d = $q.defer();
 
-			// self.loadUser().then(function (user) {
-			// 	if (user) {
-			// 		d.resolve(self.current);
-			// 	}
-			// 	else {
+			self.loadUser().then(function (user) {
+				if (user) {
+					d.resolve(self.current);
+				}
+				else {
 
 					//
 					// Initiate the facebook login process
@@ -217,8 +213,8 @@ app.service('UserService', function (FIREBASE_URL,
 						{
 							scope: 'email' // Comma separated list of permissions to request from facebook
 						});
-			// 	}
-			// });
+				}
+			});
 			return d.promise;
 		}
 	};
