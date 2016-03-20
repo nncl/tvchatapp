@@ -1,19 +1,21 @@
 <ion-view title="Find Shows"
           class="search" >
+
+      		<!-- Search Input Control -->
+	<div class="bar bar-subheader item-input-inset" >
+		<label class="item-input-wrapper" >
+			<i class="icon ion-ios-search placeholder-icon" ></i >
+			<input type="search"
+			       ng-model="search.name"
+			       ng-focus="focused()"
+			       placeholder="Search" >
+		</label >
+	</div >
+
 	<ion-content >
 
-		<!-- Search Input Control -->
-		<div class="bar bar-header item-input-inset" >
-			<label class="item-input-wrapper" >
-				<i class="icon ion-ios-search placeholder-icon" ></i >
-				<input type="search"
-				       ng-model="search.name"
-				       placeholder="Search" >
-			</label >
-		</div >
-
 		<!-- Show List -->
-		<ion-list >
+		<ion-list class="ca-top-header">
 			<ion-item ng-repeat="show in filteredShows = (showService.shows | filter:search )"
 			          ui-sref="app.show({'showId':show.showid})"
 			          class="item-thumbnail-left" >

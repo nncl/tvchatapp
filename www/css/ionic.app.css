@@ -9782,6 +9782,9 @@ a.button {
   font-size: 70%;
   color: #1a1a1a; }
 
+.ca-top-header .list {
+  padding-top: 44px; }
+
 .show {
   background-color: #f8f8f8; }
   .show .loading {
