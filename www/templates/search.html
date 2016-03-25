@@ -17,6 +17,8 @@
 		<!-- Show List -->
 		<ion-list class="ca-top-header">
 			<ion-item ng-repeat="show in filteredShows = (showService.shows | filter:search )"
+			          ion-track-tap="Select Show"
+			          ion-track-data="show"
 			          ui-sref="app.show({'showId':show.showid})"
 			          class="item-thumbnail-left" >
 				<div class="image"

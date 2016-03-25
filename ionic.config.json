@@ -1,0 +1,12 @@
+{
+  "name": "tvchat",
+  "app_id": "fa162487",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}

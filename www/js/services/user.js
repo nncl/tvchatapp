@@ -7,7 +7,8 @@ app.service('UserService', function (FIREBASE_URL,
                                      $localstorage,
                                      $ionicPopup,
                                      $firebaseAuth,
-                                     $firebaseObject) {
+                                     $firebaseObject,
+                                     $ionicAnalytics) {
 
 	var ref = new Firebase(FIREBASE_URL);
 	var usersRef = new Firebase(FIREBASE_URL + "/users");
@@ -35,9 +36,11 @@ app.service('UserService', function (FIREBASE_URL,
 			// Toggles the favorite setting for a show for the current user.
 			self.ensureFavorite();
 			if (self.current.favorites[show.showid]) {
-				self.removeFavorite(show)
+				self.removeFavorite(show);
+				$ionicAnalytics.track('Unfavorite show' , show);
 			} else {
-				self.addFavorite(show)
+				self.addFavorite(show);
+				$ionicAnalytics.track('Favorite show' , show);
 			}
 			self.current.$save();
 		},
@@ -74,6 +77,7 @@ app.service('UserService', function (FIREBASE_URL,
 					// When we are sure the object has been completely
 					// loaded from firebase then resolve the promise.
 					self.current = user;
+					self.registerUser();
 					d.resolve(self.current);
 				});
 			} else {
@@ -87,6 +91,25 @@ app.service('UserService', function (FIREBASE_URL,
 		logoutUser: function () {
 			$localstorage.set('tvchat-user', null);
 			self.current = {};
+		},
+		/*
+		 Register the user
+		 */
+		registerUser: function() {
+			Ionic.io();
+
+			// give a fresh user
+			var user = Ionic.User.current();
+
+			// give an id to user if it does not has one
+			if (!user.id) {
+				user.id = self.current.userId;
+				user.set('name', self.current.name);
+				user.set('image', self.current.profilePic);
+			};
+
+			// persist the user
+			user.save();
 		},
 		/*
 		 Login the user
@@ -165,6 +188,7 @@ app.service('UserService', function (FIREBASE_URL,
 														$localstorage.set('tvchat-user', authData.uid);
 														self.current = $firebaseObject(usersRef.child(authData.uid));
 														self.current.$loaded(function () {
+															self.registerUser();
 															// When we are sure the object has been completely
 															// loaded from firebase then resolve the promise.
 															d.resolve(self.current);
